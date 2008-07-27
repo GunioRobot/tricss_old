@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Untitled Document</title>
+		<script type="text/javascript" src="../Mootools/mootools-core.js"></script>
+		<script type="text/javascript" src="../Source/Css.js"></script>
+		<script type="text/javascript" src="../Source/Css.Element.js"></script>
+		<script type="text/javascript" src="../Source/Css.Selector.js"></script>
+		<script type="text/javascript">
+			function log(message){
+				if (window.console && console.log) console.log(message);
+				new Element('div', {
+					text: message
+				}).inject('debug');
+			}
+			
+			window.addEvent('domready', function(){				
+				var selectors = [
+					'div#a .b',						// + 1
+					'div',							// + 4 (2 from debug)
+					'#a',							// + 1
+					'.a',							// + 0
+					'div#a > div',					// + 1
+					'a[title=c]',					// + 1
+					'div:hover',					//   2
+					'div#a:hover div.b',			//   1
+					'div:hover div:hover a',		//   1
+					'input:focus',					//   1
+					'input:hover:focus'				//   1
+				];
+				var i = 0, should = 8;
+				
+				selectors.each(function(selectorStr){
+					var selector = new Css.Selector(selectorStr);
+					selector.addEvent('complies', function(){
+						log('+ ' + selectorStr);
+						i++;
+					});
+					selector.addEvent('uncomplies', function(){
+						log('- ' + selectorStr);
+					});
+				});
+				
+				log('----');
+				log('matches: ' + i + ', should be ' + should + ' ');
+				log((i == should) ? ':)' : ':(');
+			});
+		</script>
+	</head>
+	<body>
+		<div id="a">
+			<div class="b">
+				<a title="c">Lorem ipsum ...</a>
+			</div>
+		</div>
+		<input type="text" />
+		<p>Tests the selectors.</p>
+		<p><code>
+		div#a .b<br />
+		div<br />
+		#a<br />
+		.a<br />
+		div#a > div<br />
+		a[title=c]<br />
+		div:hover<br />
+		div#a:hover div.b<br />
+		div:hover div:hover a<br />
+		input:focus<br />
+		input:hover:focus
+		</code></p>
+		<p>Log:</p>
+		<div id="debug"></div>
+	</body>
+</html>

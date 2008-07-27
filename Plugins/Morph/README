@@ -1,0 +1,14 @@
+Morph
+
+Same as moo-fx and Css Animations. You know what.
+
+
+Namespace: -mootools-morph
+
+Properties:
+	-mootools-morph-duration
+	-mootools-morph-property
+	-mootools-morph-transition
+
+
+Namespace: -webkit-transition

@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Untitled Document</title>
+		<script type="text/javascript" src="../Mootools/mootools-core.js"></script>
+		<script type="text/javascript" src="../Source/Css.js"></script>
+		<script type="text/javascript" src="../Source/Css.Element.js"></script>
+		<script type="text/javascript">
+			function log(message){
+				if (window.console && console.log) console.log(message);
+				new Element('div', {
+					text: message
+				}).inject('debug');
+			}
+			
+			window.addEvent('domready', function(){
+				var element = $('test');
+				
+				element.addDpEvent(':hover', function(){
+					log('+ :hover');
+				});
+				element.addDpEvent(':hover', 'leave', function(){
+					log('- :hover');
+				});
+				
+				element.addDpEvent(':focus', 'enter', function(){
+					log('+ :focus');
+				});
+				element.addDpEvent(':focus', 'leave', function(){
+					log('- :focus');
+				});
+				
+				element.addDpEvent([':hover', ':focus'], function(){
+					log('+ :hover:focus');
+				});
+				element.addDpEvent([':hover', ':focus'], 'leave', function(){
+					log('- :hover:focus');
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<input id="test" type="text" value="Lalala" />
+		<p>Attaches :hover, :focus and :hover:focus events.</p>
+		<p>Example: <code>$('test').addDpEvent(':hover', fn);</code></p>
+		<p>Log:</p>
+		<div id="debug"></div>
+	</body>
+</html>

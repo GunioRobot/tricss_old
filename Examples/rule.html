@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Untitled Document</title>
+		<script type="text/javascript" src="../Mootools/mootools-core.js"></script>
+		<script type="text/javascript" src="../Source/Css.js"></script>
+		<script type="text/javascript" src="../Source/Css.Element.js"></script>
+		<script type="text/javascript" src="../Source/Css.Rule.js"></script>
+		<script type="text/javascript" src="../Source/Css.Style.js"></script>
+		<script type="text/javascript" src="../Source/Css.Selector.js"></script>
+		<script type="text/javascript">
+			function log(message){
+				if (window.console && console.log) console.log(message);
+				new Element('div', {
+					text: message
+				}).inject('debug');
+			}
+			
+			// add our custom "test"-property:
+			Css.Properties.set('test');
+			
+			// handler:
+			Css.Properties.addEvent('testChange', function(element, value){
+				element.setStyle('opacity', $chk(value) ? value : 1);
+			});
+			
+			document.addEvent('domready', function(){
+				// matches #a
+				var A = new Css.Rule('div#foo div div#a', {
+					test: {
+						value: 0.9
+					}
+				});
+				
+				// matches #a, overwritten by A (specificity)
+				var B = new Css.Rule('#a', {
+					test: {
+						value: 0.1
+					}
+				});
+				
+				// matches #a:hover, overwritten by A (specificity)
+				var C = new Css.Rule('#a:hover', {
+					test: {
+						value: 0.6
+					}
+				});
+				
+				// matches #b
+				var D = new Css.Rule('#b', {
+					test: {
+						value: 0
+					}
+				});
+				
+				// matches #b, overwrites D (inline style)
+				$('b').setStyle('test', 0.7);
+				
+				
+				// matches #c
+				var E = new Css.Rule('div#foo div#c', {
+					test: {
+						value: 0.5
+					}
+				});
+					
+				// matches #c, overwrites E (importance)
+				var F = new Css.Rule('div#c', {
+					test: {
+						importance: 2,
+						value: 0.5
+					}
+				});
+				
+				// matches #c, overwrites F when the parent div is hovered
+				var G = new Css.Rule('div:hover div#c', {
+					test: {
+						importance: 2,
+						value: 1
+					}
+				});
+				
+				log('#a');
+				log($('a').getStyle('test') + ', sould be 0.9');
+				log('no change when hovered');
+				log('----');
+				
+				log('#b');
+				log($('b').getStyle('test') + ', sould be 0.7');
+				log('----');
+				
+				log('#c');
+				log($('c').getStyle('test') + ', sould be 0.5');
+				log('changes to 1 when any div hovered');
+			});
+		</script>
+	</head>
+	<body>
+		<div id="foo">
+			<div>
+				<div id="a">
+					#a
+				</div>
+				<div id="b">
+					#b
+				</div>
+				<div id="c">
+					#c
+				</div>
+			</div>
+		</div>
+		<p>Adds custom rules. Look at the source for further details!</p>
+		<p>Log:</p>
+		<div id="debug"></div>
+	</body>
+</html>
