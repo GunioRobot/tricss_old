@@ -82,29 +82,32 @@ Css.Rule = new Class({
 	
 	getDeclaration: function(property){
 		property = property.hyphenate();
-		var obj = Css.Properties.get(property);
-				
-		return ($type(obj.declarationGetter) == 'function') ? obj.declarationGetter.call(this)
-			: {
-				importance: this.importances.get(property),
-				value: this.values.get(property)
-			};
+		
+		var getter = Css.Properties.get(property).getter;
+		
+		var obj = {
+			importance: this.importances.get(property),
+			value: this.values.get(property)
+		};
+		
+		return (!getter || getter == $empty) ? obj : getter.call(this, obj);
 	},
 		
 	setDeclaration: function(property, value, importance){
 		property = property.hyphenate();
 		importance = ($chk(importance)) ? importance : 1;
 
-		var obj = Css.Properties.get(property);
-		
-		if ($type(obj.declarationSetter) == 'function'){
-			obj.declarationSetter.call(this, value, importance);
-		} else {
+		var setter = Css.Properties.get(property).setter;
+				
+		if (!setter || setter == $empty){
 			this.values.set(property, value);
 			this.importances.set(property, importance);
+		} else {
+			setter.call(this, value, importance);
 		}
 		
 		Css.Properties.fireEvent(property + 'Set', [this, value, importance]);
+		
 		this.getAffectedElements().each(this.changed, this);
 		
 		return this;
@@ -114,6 +117,7 @@ Css.Rule = new Class({
 		Hash.each(declarations, function(obj, property){
 			this.setDeclaration(property, obj.value, obj.importance);
 		}, this);
+		
 		return this;
 	}
 });

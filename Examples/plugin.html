@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Untitled Document</title>
+		<script type="text/javascript" src="../Mootools/mootools-core.js"></script>
+		<script type="text/javascript" src="../Source/Css.js"></script>
+		<script type="text/javascript" src="../Source/Css.Element.js"></script>
+		<script type="text/javascript" src="../Source/Css.Parser.js"></script>
+		<script type="text/javascript" src="../Source/Css.Plugin.js"></script>
+		<script type="text/javascript" src="../Source/Css.Rule.js"></script>
+		<script type="text/javascript" src="../Source/Css.Selector.js"></script>
+		<script type="text/javascript" src="../Source/Css.Style.js"></script>
+		<script type="text/javascript">
+			function log(message){
+				if (window.console && console.log) console.log(message);
+				new Element('div', {
+					text: message
+				}).inject('debug');
+			}
+			
+			new Css.Plugin('zoom', {
+				onChange: function(element, styles){
+					log('set to: x = ' + styles.x + ', y = ' + styles.y);
+				},
+				prefix: '-mootools-zoom',
+				properties: {
+					x: {
+						initial: 1
+					},
+					y: {
+						initial: 1
+					}
+				},
+				shorthand: true
+			});
+			
+			var msg = '';
+			(function(){
+				var newMsg = 'shorthand: ' + $('blub').getStyle('-mootools-zoom');
+				if (msg != newMsg){
+					msg = newMsg;
+					log(msg);
+				}
+			}).periodical(100);
+		</script>
+		<style type="text/css">
+			div#blub {
+				-mootools-zoom-x: 15;
+			}
+			div#blub:hover {			
+				-mootools-zoom: 10 10;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="blub">blub<br />blub<br />blub</div>
+		<p>Tests the plugin-creation funcionality.</p>
+		<p>Log:</p>
+		<div id="debug"></div>
+	</body>
+</html>

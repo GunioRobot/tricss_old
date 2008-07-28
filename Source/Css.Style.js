@@ -11,7 +11,7 @@ Element.implement({
 			var value = null, importance = 0, specificity = 0;
 			
 			rules.each(function(rule, i){
-				var rValue = rule.values.get(property);
+				var rValue = rule.getDeclaration(property).value;
 				if (!$chk(rValue)) return;
 				
 				var rImportance = rule.importances.get(property);

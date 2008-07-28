@@ -1,4 +1,4 @@
-// Css, Copyright 2008 (c) Chris Schneider, <http://www.chrisbk.de>
+// tricss, Copyright 2008 (c) Chris Schneider, <http://www.chrisbk.de>
 
 var Css = {
 	version: '1.0beta'
@@ -45,9 +45,8 @@ Css.Properties = new new Class({
 	
 	set: function(property, options){
 		var obj = Hash.extend({
-			declarationSetter: null,
+			getter: $empty,
 			initial: null,
-			remover: $empty,
 			setter: $empty
 		}, options);
 		this.properties.set(property, obj);
