@@ -37,13 +37,13 @@ Css.Plugin = new Class({
 				
 			var obj = {};
 			
-			obj.getter = function(){
+			obj.getter = function(obj){
 				var value = properties.map(function(property){
 					return this.values.get(property) || Css.Properties.get(property).initial;
 				}, this).join(' ');
 				
 				return {
-					importance: this.importances.get(shorthand),
+					importance: obj.importance,
 					value: value
 				};
 			};

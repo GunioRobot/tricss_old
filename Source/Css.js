@@ -45,9 +45,9 @@ Css.Properties = new new Class({
 	
 	set: function(property, options){
 		var obj = Hash.extend({
-			getter: $empty,
+			getter: false,
 			initial: null,
-			setter: $empty
+			setter: false
 		}, options);
 		this.properties.set(property, obj);
 	}

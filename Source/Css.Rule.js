@@ -90,7 +90,7 @@ Css.Rule = new Class({
 			value: this.values.get(property)
 		};
 		
-		return (!getter || getter == $empty) ? obj : getter.call(this, obj);
+		return (!getter) ? obj : getter.call(this, obj);
 	},
 		
 	setDeclaration: function(property, value, importance){
@@ -99,7 +99,7 @@ Css.Rule = new Class({
 
 		var setter = Css.Properties.get(property).setter;
 				
-		if (!setter || setter == $empty){
+		if (!setter){
 			this.values.set(property, value);
 			this.importances.set(property, importance);
 		} else {
