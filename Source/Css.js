@@ -24,11 +24,16 @@ Css.DynamicPseudos = new Hash({
 
 Css.Properties = new new Class({
 	
-	// Extend: Hash,
 	Implements: Events,
 	
 	initialize: function(){
 		this.properties = new Hash();
+		
+		this.default = {
+			getter: false,
+			initial: null,
+			setter: false
+		};
 	},
 	
 	each: function(){
@@ -36,7 +41,7 @@ Css.Properties = new new Class({
 	},
 	
 	get: function(property){
-		return this.properties.get.apply(this.properties, arguments);
+		return this.properties.get.apply(this.properties, arguments) || Hash.extend(this.default);
 	},
 	
 	has: function(){
@@ -44,11 +49,8 @@ Css.Properties = new new Class({
 	},
 	
 	set: function(property, options){
-		var obj = Hash.extend({
-			getter: false,
-			initial: null,
-			setter: false
-		}, options);
+		var obj = Hash.extend(this.default, options);
+		
 		this.properties.set(property, obj);
 	}
 })();

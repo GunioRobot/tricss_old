@@ -138,10 +138,10 @@ Css.Selector = (function(){
 	
 			var a = str.split('#').length - 1;
 	
-			var b = str.match(Css.Selector.RegExps.specificityB);
+			var b = str.match(regExps.specificityB);
 			b = (b) ? b.length : 0;
 	
-			var c = str.match(Css.Selector.RegExps.specificityC);
+			var c = str.match(regExps.specificityC);
 			c = (c) ? c.length : 0;
 	
 			if (str.match(/^[a-z]+/i)) c++;

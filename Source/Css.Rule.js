@@ -1,83 +1,41 @@
 Css.Rule = new Class({
 	
+	initialize: function(a, b){
+		switch($type(a)){
+		case 'element':
+			return new Css.Rule.Element(a, b);
+		case 'string':
+			a = new Css.Selector(a);
+		default:
+			return new Css.Rule.Selector(a, b);
+		}
+	}
+});
+
+Css.Rule.Abstract = new Class({
+	
 	initialize: function(selector, declarations){
 		declarations = declarations || {};
 		this.importances = new Hash();
 		this.values = new Hash();
-		this.element = false;
-
-		if ($type(selector) == 'element'){
-			this.selector = {
-				getSpecificity: $lambda(0)
-			};
-			this.element = selector;
-			
-			var rules = this.element.retrieve('Css.Rule.rules');
-			if (!rules){
-				rules = [];
-				this.element.store('Css.Rule.rules', rules);
-			}
-			rules.include(this);
-		} else {
-			this.selector = new Css.Selector(selector);
-			
-			this.selector.addEvent('complies', this.attachTo.bind(this));
-			this.selector.addEvent('uncomplies', this.detachFrom.bind(this));
-			
-			if (this.selector.alwaysComplies) this.selector.elements.each(this.attachTo, this);
-		}
 		
 		this.setDeclarations(declarations);
 	},
 	
 	attachTo: function(element){
-		this._attach_(element, false).changed(element);
-		return this;
-	},
-	
-	detachFrom: function(element){
-		this._attach_(element, true).changed(element);
-		return this;
-	},
-	
-	_attach_: function(element, remove){
-		var rules = element.retrieve('Css.Rule.rules');
-		if (!rules){
-			rules = [];
-			element.store('Css.Rule.rules', rules);
-		}
-		rules[(remove === true) ? 'erase' : 'include'](this);
-				
-		this.changed(element);
-				
-		return this;
-	},
-	
-	changed: function(element){
-		if (element.retrieve('Css.Rule.attached') == true) return this;
+		element.getCssRules().include(this);
 		
-		(function(){
-			Css.Properties.each(function(obj, property){
-				element.store('Css.Rule.attached', false);
-				
-				var newValue = element.getStyle(property);
-				var previousValue = element.retrieve('Css.Rule.previousValue.' + property);
-				
-				if (newValue == previousValue) return;
-					
-				Css.Properties.fireEvent(property + 'Change', [element, newValue]);
-					
-				element.store('Css.Rule.previousValue.' + property, newValue);
-			});
-		}).delay(1, this);
-		
-		element.store('Css.Rule.attached', true);
+		Css.Rule.changed(element);
 		
 		return this;
 	},
 	
-	getAffectedElements: function(){
-		return (this.element) ? [this.element] : this.selector.elements.getValues();
+	detatchFrom: function(element){
+		element.getCssRules().erase(this);
+		
+		Css.Rule.changed(element);
+		
+		return this;
 	},
 	
 	getDeclaration: function(property){
@@ -96,7 +54,7 @@ Css.Rule = new Class({
 	setDeclaration: function(property, value, importance){
 		property = property.hyphenate();
 		importance = ($chk(importance)) ? importance : 1;
-
+		
 		var setter = Css.Properties.get(property).setter;
 				
 		if (!setter){
@@ -105,10 +63,10 @@ Css.Rule = new Class({
 		} else {
 			setter.call(this, value, importance);
 		}
-		
+				
 		Css.Properties.fireEvent(property + 'Set', [this, value, importance]);
 		
-		this.getAffectedElements().each(this.changed, this);
+		this.getElements().each(Css.Rule.changed, this);
 		
 		return this;
 	},
@@ -120,4 +78,86 @@ Css.Rule = new Class({
 		
 		return this;
 	}
+});
+
+Css.Rule.Selector = new Class({
+	
+	Extends: Css.Rule.Abstract,
+	
+	initialize: function(selector, declarations){
+		this.parent(declarations);
+		
+		this.selector = ($type(selector) == 'string') ? new Css.Selector(selector)
+			: selector;
+				
+		this.selector.addEvent('complies', this.attachTo.bind(this));
+		this.selector.addEvent('uncomplies', this.detatchFrom.bind(this));
+		
+		//if (this.selector.alwaysComplies) this.selector.elements.each(this.attachTo, this);
+		
+		this.setDeclarations(declarations);
+	},
+	
+	getElements: function(){
+		return this.selector.getElements();
+	},
+	
+	getSpecificity: function(){
+		return this.selector.getSpecificity();
+	}
+});
+
+
+Css.Rule.Element = new Class({
+	
+	Extends: Css.Rule.Abstract,
+	
+	initialize: function(element, declarations){
+		this.parent(declarations);
+		
+		this.element = element;
+		
+		this.element.getCssRules().include(this);
+	},
+	
+	getElements: function(){
+		return [this.element];
+	},
+	
+	getSpecificity: function(){
+		return 0;
+	}
+});
+
+Css.Rule.changed = function(element){
+	if (element.retrieve('css:rule:hasXyz') == true) return;
+	
+	element.store('css:rule:hasXyz', true);
+	
+	(function(){
+		Css.Properties.each(function(obj, property){
+			element.store('css:rule:hasXyz', false);
+			
+			var newValue = element.getStyle(property);
+			var previousValue = element.retrieve('css:rule:previousValue:' + property);
+						
+			if (newValue == previousValue) return;
+				
+			Css.Properties.fireEvent(property + 'Change', [element, newValue]);
+				
+			element.store('css:rule:previousValue:' + property, newValue);
+		});
+	}).delay(1, this);
+};
+
+
+Element.implement('getCssRules', function(){
+	var rules = this.retrieve('css:rules:rules');
+
+	if (!rules){
+		rules = [];
+		this.store('css:rules:rules', rules);
+	}
+
+	return rules;
 });
