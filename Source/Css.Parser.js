@@ -1,59 +1,118 @@
 Css.Parser = new new Class({
 	
-	initialize: function(){
+	initialize: function(){		
 		this.regexps = {
-			a: /\s*([^{]+){([^}]*)}/gi,
-			b: /\s*([a-z-]+)\s*:\s*([^;]+?)\s*(!important)?\s*;/gi,
-			comments: /\/\*.*?\*\//gi
+			comments: /\/\*.*?\*\//gi,
+			declarations: /\s*([a-z-]+)\s*:\s*([^;]+?)\s*(!important)?\s*;/gi,
+			rules: /\s*([^{]+){([^}]*)}/gi
 		};
 	},
 	
-	addCss: function(text){
+	declarations: function(css){
+		var declarations = {};
+		
+		while (result = this.regexps.declarations.exec(css)){
+			var property = result[1];
+			
+			declarations[property] = {
+				important: (result[3] == '!important'),
+				value: result[2]
+			};
+		}
+		
+		return declarations;
+	},
+	
+	rules: function(css, declarations){
 		var rules = [];
-		text = text.replace(this.regexps.comments, '');
-		while (a = this.regexps.a.exec(text)){
-			var selector = a[1];
-			var declarations = {};
-			while (b = this.regexps.b.exec(a[2])){
-				if (!Css.Properties.has(b[1])) continue;
-				var obj = {
-					importance: (b[3] == '!important') ? 2 : 1,
-					value: b[2]
-				};
-				Hash.set(declarations, b[1], obj);
-			}
-			var rule = new Css.Rule(selector, declarations);
+		
+		css = css.replace(this.regexps.comments, '');
+		
+		while (result = this.regexps.rules.exec(css)){
+			var rule = {
+				body: result[2],
+				selector: result[1]
+			};
+			
+			if (declarations) rule.declarations = this.declarations(rule.body),
+			
 			rules.push(rule);
 		}
+		
 		return rules;
-	},
-	
-	addStylesheet: function(element){
-		switch (element.get('tag')){
-			case 'style':
-				// IE Probs! (drops custom declarations)
-				this.addCss(element.get('html'));
-				break;
-			case 'link':
-				new Request({
-					onSuccess: function(text){
-						this.addCss(text);
-					}.bind(this),
-					url: element.href,
-					method: 'get'
-				}).send();
-		}
-		return this;
-	},
-	
-	processDocument: function(){
-		Hash.each(document.styleSheets, function(styleSheet){
-			if (!styleSheet.ownerNode && !styleSheet.owningElement) return;
-			var element = $(styleSheet[styleSheet.ownerNode ? 'ownerNode' : 'owningElement']);
-			this.addStylesheet(element);
-		}, this);
-		return this;
-	}	
+	}
 })();
 
-window.addEvent('domready', Css.Parser.processDocument.bind(Css.Parser));
+
+Css.Document = new new Class({
+	
+	initialize: function(){
+		this.ready = false;
+		this.rules = [];
+		
+		window.addEvent('domready', this.process.bind(this));
+	},
+	
+	addCss: function(css){
+		var rules = Css.Parser.rules(css, true);
+		
+		rules.map(function(rule){
+			return new Css.Rule(rule.selector, rule.declarations);
+		});
+		
+		this.rules.extend(rules);
+						
+		return this;
+	},
+	
+	addStylesheet: function(element, fn){
+		fn = fn || $empty;
+		
+		switch (element.get('tag')){
+		case 'style':
+			this.addCss(element.get('html')); // IE: drops custom declarations
+			fn();
+			this.ready = true;
+		break;
+		case 'link':
+			new Request({
+				onSuccess: function(text){
+					this.addCss(text);
+					fn();
+				}.bind(this),
+				url: element.href,
+				method: 'get'
+			}).send();
+		}
+		
+		return this;
+	},
+	
+	process: function(){
+		var i = 0;
+		
+		var fn = (function(){
+			if (!this.ready && i == 0){
+				this.ready = true;
+				document.fireEvent('css:ready', [this.rules]);
+			}
+		}).bind(this);
+		
+		Hash.each(document.styleSheets, function(styleSheet){
+			i++;
+			
+			if (!styleSheet.ownerNode && !styleSheet.owningElement) return;
+			
+			var element = $(styleSheet[styleSheet.ownerNode ? 'ownerNode' : 'owningElement']);
+			
+			this.addStylesheet(element, function(){
+				i--;
+				fn();
+			});
+		}, this);
+				
+		fn();
+		
+		return this;
+	}
+})();
