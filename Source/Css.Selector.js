@@ -41,9 +41,7 @@ Css.Selector = (function(){
 				this.used = true;
 					
 				this.elements.empty();
-				
-				console.log(this.selector);
-				
+								
 				document.getElements(this.staticSelector).each(function(element){
 					var id = getId(element);
 				

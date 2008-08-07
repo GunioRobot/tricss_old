@@ -17,32 +17,37 @@
 			
 			window.addEvent('domready', function(){				
 				var selectors = [
-					'div#a .b',						// + 1
-					'div',							// + 4 (2 from debug)
-					'#a',							// + 1
-					'.a',							// + 0
-					'div#a > div',					// + 1
-					'a[title=c]',					// + 1
-					'div:hover',					//   2
-					'div#a:hover div.b',			//   1
-					'div:hover div:hover a',		//   1
-					'input:focus',					//   1
-					'input:hover:focus'				//   1
+					'div#a .b',
+					'div',
+					'#a',
+					'.a',
+					'div#a > div',
+					'a[title=c]',
+					'div:hover',
+					'div#a:hover div.b',
+					'div:hover div:hover a',
+					'input:focus',
+					'input:hover:focus'
 				];
-				var i = 0, should = 8;
+				var i = 0, should = 0;
+				
+				log('test result:');
+				
+				selectors.each(function(selector){
+					should += $$(selector).length;
+				});
 				
 				selectors.each(function(selectorStr){
 					var selector = new Css.Selector(selectorStr);
 					selector.addEvent('complies', function(){
-						log('+ ' + selectorStr);
+						log.delay(1, null, '+ ' + selectorStr);
 						i++;
 					});
 					selector.addEvent('uncomplies', function(){
-						log('- ' + selectorStr);
+						log.delay(1, null, '- ' + selectorStr);
 					});
 				});
 				
-				log('----');
 				log('matches: ' + i + ', should be ' + should + ' ');
 				log((i == should) ? ':)' : ':(');
 			});
@@ -55,7 +60,7 @@
 			</div>
 		</div>
 		<input type="text" />
-		<p>Tests the selectors.</p>
+		<p>Tests selectors:</p>
 		<p><code>
 		div#a .b<br />
 		div<br />
