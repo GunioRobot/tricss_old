@@ -41,7 +41,9 @@ Css.Selector = (function(){
 				this.used = true;
 					
 				this.elements.empty();
-			
+				
+				console.log(this.selector);
+				
 				document.getElements(this.staticSelector).each(function(element){
 					var id = getId(element);
 				
@@ -151,12 +153,16 @@ Css.Selector = (function(){
 			return this.specificity;	
 		},
 
-		update: function(){			
+		update: function(){
+			var lastPart = this.parts.getLast();
+				
 			this.parts.each(function(part){
-				if (!part.used || this.used) part.use();
+				if ((!part.alwaysComplies || part == lastPart) && (!part.used || this.used)) part.use();
 			}, this);
 			
-			this.elements = this.parts.getLast().elements;
+			this.used = true;
+			
+			this.elements = lastPart.elements;
 			
 			this.elements.each(function(element){
 				var num = 1;
@@ -187,8 +193,6 @@ Css.Selector = (function(){
 			
 				}
 			}, this);
-	
-			this.used = true;
 			
 			return this;
 		}
