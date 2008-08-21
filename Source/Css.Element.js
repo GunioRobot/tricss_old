@@ -31,14 +31,15 @@ Element.implement({
 	},
 	
 	registerDynamicPseudo: function(dynamicPseudo){		
-		if (!Css.DynamicPseudos.has(dynamicPseudo)) return this;
+		if (!TricssDynamicPseudos.has(dynamicPseudo)) return this;
 				
-		if (!this.registeredDynamicPseudos) this.registeredDynamicPseudos = [];
-		else if (this.registeredDynamicPseudos.contains(dynamicPseudo)) return this;
-				
-		if (!this.state) this.state = [];
+		if (!this.registeredDynamicPseudos){
+			this.registeredDynamicPseudos = [];
+			this.state = [];
+		} else if (this.registeredDynamicPseudos.contains(dynamicPseudo))
+			return this;
 		
-		var obj = Css.DynamicPseudos.get(dynamicPseudo);
+		var obj = Tricss.DynamicPseudos.get(dynamicPseudo);
 		
 		['enter', 'leave'].each(function(when){
 			$splat(obj[when]).each(function(event){
