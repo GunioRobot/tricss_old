@@ -1,38 +1,36 @@
 // tricss, Copyright 2008 (c) Chris Schneider, <http://www.chrisbk.de>
 
 var Tricss = {
-	author: 'Chris Schneider',
 	build: '%build%',
 	version: '1.0beta',
-	website: 'http://www.chrisbk.de/repository/tricss/'
 };
 
-Tricss.Properties = new Hash();
-
-(function(){
-	var events = new Events();
+Tricss.Properties = new new Class({
 	
-	['addEvent', 'fireEvent', 'removeEvent'].each(function(event){
-		var parent = Tricss.Properties[event];
-		
-		// property, mutatorOrAccessor (find a better name!) ...
-		Tricss.Properties[event] = function(){
-			arguments[1] = arguments[0] + '@' + arguments[1];
-			arguments.shift();
+	Extends: Hash,
+	Implements: Events,
 			
-			return this.parent.apply(this, arguments);
+	initialize: function(){
+		this.default = {
+			getter: $arguments(0),
+			initial: '',
+			setter: $empty
 		};
-	});
-})();
-/*
-Tricss.Properties.get = function(){
-	return this.get.apply(this.properties, arguments) || Hash.extend(this.default);
-};
-
-Tricss.Properties.set = function(){
-	var obj = Hash.extend(this.default, options);
+	},
 	
-	this.properties.set(property, obj);
-};*/
+	get: function(property){
+		return this.parent(property) || $extend(this.default);
+	},
+	
+	set: function(property, options){
+		options = $extend(this.default, options);
+		
+		return this.parent(property, options);
+	}
+})();
 
-var Css = Tricss;
+$each(Events.prototype, function(fn, method){
+	var newMethod = method.replace('Event', 'Observer');
+	Tricss.Properties[newMethod] = fn;
+	delete Tricss.Properties[method]
+});
