@@ -6,8 +6,8 @@ var parentSet = Element.prototype.setStyle;
 Element.implement({
 	
 	getStyle: function(property){
-		if (Css.Properties.has(property)){
-			var rules = this.getCssRules(), value = null, importance = 0, specificity = 0;
+		if (Tricss.Properties.has(property)){
+			var rules = this.getTricssRules(), value = null, importance = 0, specificity = 0;
 			
 			rules.each(function(rule, i){
 				var rValue = rule.getDeclaration(property).value;
@@ -25,18 +25,18 @@ Element.implement({
 				specificity = rSpecificity;
 			});
 			
-			return value || Css.Properties.get(property).initial;
+			return value || Tricss.Properties.get(property).initial;
 		}
 		return parentGet.apply(this, arguments);
 	},
 	
 	setStyle: function(property, value){
-		if (Css.Properties.has(property)){
-			var inlineRule = this.retrieve('css:inlineRule');
+		if (Tricss.Properties.has(property)){
+			var inlineRule = this.retrieve('tricss:inlineRule');
 			
 			if (!inlineRule){
 				inlineRule = new Css.Rule(this);
-				this.store('css:inlineRule', inlineRule);
+				this.store('tricss:inlineRule', inlineRule);
 			}
 			
 			inlineRule.setDeclaration(property, value, 3);
