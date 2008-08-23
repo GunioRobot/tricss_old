@@ -8,7 +8,7 @@ Element.implement({
 	getStyle: function(property){
 		if (Tricss.Properties.has(property)){
 			var rules = this.getTricssRules(), value = null, importance = 0, specificity = 0;
-			
+						
 			rules.each(function(rule, i){
 				var rValue = rule.getDeclaration(property).value;
 				
@@ -35,7 +35,7 @@ Element.implement({
 			var inlineRule = this.retrieve('tricss:inlineRule');
 			
 			if (!inlineRule){
-				inlineRule = new Css.Rule(this);
+				inlineRule = new Tricss.Rule(this);
 				this.store('tricss:inlineRule', inlineRule);
 			}
 			

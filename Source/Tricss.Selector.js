@@ -9,7 +9,7 @@ function getId(element){
 		id = ID += 1;
 		element.store('tricss:selector:id', id);
 	}
-		
+			
 	return id;
 }
 
@@ -46,7 +46,7 @@ var Part = (function(){
 				this.elements.set(id, element);
 				
 				if (this.alwaysComplies) return;
-			
+							
 				element.addTricssEvent(this.dynamicPseudos, 'enter', this.fireEvent.bind(this, id + ':complies'))
 				.addTricssEvent(this.dynamicPseudos, 'leave', this.fireEvent.bind(this, id + ':uncomplies'));
 			}, this);
@@ -60,7 +60,7 @@ var Part = (function(){
 var cache = new Hash();
 
 var regExps = {
-	dynamics: (/(:active|:focus|:hover)/g),
+	dynamics: (/:(active|focus|hover)/g),
 	specificityA: /:(before|after|first-letter|first-line)/,
 	specificityB: /\[|\:|\./g,
 	specificityC: /( |\+|>)[a-z]+/ig,
@@ -101,9 +101,9 @@ Tricss.Selector = new Class({
 			strStatic += result[i] + r[0];
 			strOriginal += result[i] + str;
 	
-			var dynamicPseudos = r.clean().erase(' ');
+			var dynamicPseudos = r.erase('').erase(' ');
 			dynamicPseudos.shift();
-	
+				
 			var part = new Part(strOriginal, strStatic, dynamicPseudos);
 	
 			if (!part.alwaysComplies) this.alwaysComplies = false;
@@ -117,7 +117,7 @@ Tricss.Selector = new Class({
 
 		if (event == 'complies' && this.alwaysComplies)
 			this.elements.each(function(element){
-				fn(element, this);
+				fn.call(this, element);
 			}, this);
 
 		this.parent.apply(this, arguments);
@@ -168,23 +168,23 @@ Tricss.Selector = new Class({
 				var part = this.parts[i];
 				
 				if (iLast > i) el = el.getParent();
-				
-				var id = getId(el);
-				
+								
 				if (part.alwaysComplies || !el) continue;
 				
 				delta--;
 				
+				var id = getId(el);
+				
 				part.addEvent(id + ':complies', function(){
 					delta++;
 					
-					if (delta > 0) this.fireEvent('complies', [element, this]);
+					if (delta == 1) this.fireEvent('complies', element);
 				}.bind(this));
 				
 				part.addEvent(id + ':uncomplies', function(){
 					delta--;
 					
-					if (delta == 0) this.fireEvent('uncomplies', [element, this]);
+					if (delta == 0) this.fireEvent('uncomplies', element);
 				}.bind(this));
 		
 			}

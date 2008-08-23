@@ -1,37 +1,39 @@
 Tricss.Rule = new Class({
 	initialize: function(a, b){
-		return ($type(a) == 'element') ? new Tricss.Rule.Inline(a, b)
-			: new Tricss.Rule.Css(a, b);
+		return ($type(a) == 'element') ? new Tricss.Rule.Element(a, b)
+			: new Tricss.Rule.Selector(a, b);
 	}
 });
 
 (function(){
 	
 	
-function triggerChange(element){
-	if (element.retrieve('tricss:rule:observed') == true) return;
-
-	element.store('tricss:rule:observed', true);
-
-	(function(){
-		Css.Properties.each(function(obj, property){
-			element.store('tricss:rule:observed', false);
-
+function observe(element){
+	var props = element.retrieve('tricss:rule:observer', {previousValues:{}});
+	
+	if (props.observed) return;
+	
+	props.observed = true;
+		
+	(function(){		
+		Tricss.Properties.each(function(obj, property){
+			props.observed = false;
+			
 			var newValue = element.getStyle(property);
-			var previousValue = element.retrieve('tricss:rule:previousValue:' + property);
-
+			var previousValue = props.previousValues[property];
+						
 			if (newValue == previousValue) return;
-
-			Css.Properties.fireObserver(property, [element, newValue, previousValue]);
-
-			element.store('tricss:rule:previousValue:' + property, newValue);
+			
+			Tricss.Properties.fireObserver(property, [element, newValue, previousValue]);
+			
+			props.previousValues[property] = newValue;
 		});
 	}).delay(1, this);
 };
 
 Tricss.Rule.Abstract = new Class({
 	
-	initialize: function(selector, declarations){
+	initialize: function(declarations){
 		declarations = declarations || {};
 		
 		this.importances = new Hash();
@@ -43,7 +45,7 @@ Tricss.Rule.Abstract = new Class({
 	attachTo: function(element){
 		element.getTricssRules().include(this);
 		
-		triggerChange(element);
+		observe(element);
 		
 		return this;
 	},
@@ -51,15 +53,15 @@ Tricss.Rule.Abstract = new Class({
 	detatchFrom: function(element){
 		element.getTricssRules().erase(this);
 		
-		triggerChange(element);
+		observe(element);
 		
 		return this;
 	},
 	
 	getDeclaration: function(property){
 		property = property.hyphenate();
-		
-		return Css.Properties.get(property).getter.call(this, {
+						
+		return Tricss.Properties.get(property).getter.call(this, {
 			value: this.values.get(property),
 			importance: this.importances.get(property)
 		});
@@ -69,21 +71,27 @@ Tricss.Rule.Abstract = new Class({
 		property = property.hyphenate();
 		importance = ($chk(importance)) ? importance : 1;
 		
-		var prevent = Css.Properties.get(property).setter.call(this, value, importance);
+		var prevent = Tricss.Properties.get(property).setter.call(this, value, importance);
 		
 		if (prevent !== true){
 			this.values.set(property, value);
 			this.importances.set(property, importance);
 		}
 				
-		this.getElements().each(triggerChange);
+		this.getElements().each(observe);
 		
 		return this;
 	},
 	
 	setDeclarations: function(declarations){
 		$each(declarations, function(obj, property){
-			this.setDeclaration(property, obj.value, obj.importance);
+			var type = $type(obj);
+			
+			obj = (type == 'object') ? [obj.value, obj.importance]
+				: (type != 'array') ? [obj]
+				: obj;
+			
+			this.setDeclaration(property, obj[0], obj[1]);
 		}, this);
 		
 		return this;
@@ -93,20 +101,18 @@ Tricss.Rule.Abstract = new Class({
 })();
 
 
-Css.Rule.Selector = new Class({
+Tricss.Rule.Selector = new Class({
 	
-	Extends: Css.Rule.Abstract,
+	Extends: Tricss.Rule.Abstract,
 	
 	initialize: function(selector, declarations){
-		this.parent(declarations);
-		
-		this.selector = ($type(selector) == 'string') ? new Css.Selector(selector)
+		this.selector = ($type(selector) == 'string') ? new Tricss.Selector(selector)
 			: selector;
-				
+						
 		this.selector.addEvent('complies', this.attachTo.bind(this));
 		this.selector.addEvent('uncomplies', this.detatchFrom.bind(this));
 		
-		if (this.selector.alwaysComplies) this.selector.elements.each(this.attachTo, this);
+		this.parent(declarations);
 	},
 	
 	getElements: function(){
@@ -119,9 +125,9 @@ Css.Rule.Selector = new Class({
 });
 
 
-Css.Rule.Inline = new Class({
+Tricss.Rule.Element = new Class({
 	
-	Extends: Css.Rule.Abstract,
+	Extends: Tricss.Rule.Abstract,
 	
 	initialize: function(element, declarations){
 		this.parent(declarations);
@@ -142,5 +148,5 @@ Css.Rule.Inline = new Class({
 
 
 Element.implement('getTricssRules', function(){
-	return this.retrieve('tricss:rules:rules', []);
+	return this.retrieve('tricss:rules', []);
 });
