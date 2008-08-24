@@ -3,19 +3,22 @@ Tricss.Document = new new Class({
 	initialize: function(){
 		this.ready = false;
 		this.rules = [];
+		this.rawRules = [];
 		
 		window.addEvent('domready', this.process.bind(this));
 	},
 	
 	addCss: function(css){
-		var rules = Tricss.Parser.rules(css, true);
+		var rules = [];
+		this.rawRules = Tricss.Parser.rules(css, true);
 		
-		rules.map(function(rule){
-			rule.declarations.filter(function(declaration, property){
+		this.rawRules.each(function(rule){
+			Hash.filter(rule.declarations, function(declaration, property){
 				return Tricss.Properties.has(property);
 			});
 			
-			return new Tricss.Rule(rule.selector, rule.declarations);
+			if (rule.declarations.length > 0)
+				rules.push(new Tricss.Rule(rule.selector, rule.declarations));
 		});
 		
 		this.rules.extend(rules);
