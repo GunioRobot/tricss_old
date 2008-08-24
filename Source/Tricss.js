@@ -2,7 +2,7 @@
  
 var Tricss = {
 	build: '%build%',
-	version: '1.0beta',
+	version: '1.0beta1',
 };
 
 
