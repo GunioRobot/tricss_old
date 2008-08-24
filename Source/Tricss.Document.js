@@ -22,23 +22,33 @@ Tricss.Document = new new Class({
 	addStylesheet: function(element, fn){
 		fn = fn || $empty;
 		
+		this.getCss(element, function(css){
+			this.addCss(css);
+			fn();
+		});
+		
+		return this;
+	},
+	
+	getCss: function(element, fn){
 		switch (element.get('tag')){
 		case 'style':
-			this.addCss(element.get('html')); // IE: drops custom declarations
-			fn();
+			fn.call(this, element.get('html'));
 		break;
 		case 'link':
 			new Request({
 				onSuccess: function(css){
-					this.addCss(css);
-					fn();
+					console.log(css);
+					fn.call(this, css);
+				}.bind(this),
+				onFailure: function(xhr){
+					if (document.location.href.slice(0, 8)== 'file:///')
+						fn.call(this, xhr.responseText);
 				}.bind(this),
 				url: element.href,
 				method: 'get'
 			}).send();
 		}
-		
-		return this;
 	},
 	
 	process: function(){
