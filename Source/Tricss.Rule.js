@@ -71,20 +71,28 @@ Tricss.Rule.Abstract = new Class({
 			importance: this.importances.get(property) || 1
 		};
 		
+		console.log(property, result, obj.getter);
+				
 		obj.getter.call(this, result);
+
+		console.log(property, '-', result);
 				
 		return result;
 	},
 		
 	setDeclaration: function(property, value, importance){
 		property = property.hyphenate();
-		importance = ($chk(importance)) ? importance : 1;
 		
-		var prevent = Tricss.Properties.get(property).setter.call(this, value, importance);
+		var obj = {
+			importance: ($chk(importance)) ? importance : 1,
+			value: value
+		};
+		
+		var prevent = Tricss.Properties.get(property).setter.call(this, obj);
 		
 		if (prevent !== true){
-			this.values.set(property, value);
-			this.importances.set(property, importance);
+			this.values.set(property, obj.value);
+			this.importances.set(property, obj.importance);
 		}
 				
 		this.getElements().each(changed);
