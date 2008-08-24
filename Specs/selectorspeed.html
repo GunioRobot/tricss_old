@@ -1,0 +1,546 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+<head>
+	<title>Tricss Selector Speed Test</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="./JsSpec.css" />
+	<script type="text/javascript" src="./JsSpec.js"></script>
+	<script type="text/javascript" src="./DiffMatchPatch.js"></script>
+
+	<script type="text/javascript" src="../Mootools/mootools-core.js"></script>
+	
+	<script type="text/javascript" src="../Source/Tricss.js"></script>	
+	<script type="text/javascript" src="../Source/Tricss.Event.js"></script>	
+	<script type="text/javascript" src="../Source/Tricss.Selector.js"></script>	
+		
+	<script type="text/javascript">
+		var selectors = [
+			'div',
+			'div div',
+			'div div div',
+			'div.a > div',
+			'div:focus > div.b',
+			'div > div',
+			'div.a',
+			'div.b',
+			'div.c',
+			'div.a div.b',
+			'div.b div.c',
+			'div.a div.c',
+			'div.a div.b',
+			'div.b:focus',
+			'div.c:focus',
+			'div.a:focus div.b',
+			'div.a:focus div.b div.c',
+			'div.a:focus div.b:focus',
+			'div.a:focus div.b:focus div.c',
+			'div.a:focus div.b div.c:focus',
+			'div.a:focus div.b:focus div.c:focus',
+			'div.a div.b:focus',
+			'div.a div.b:focus div.c',
+			'div.a div.b:focus',
+			'div.a div.b div.c:focus'
+		];
+		
+		describe('Speed Test', {
+			'task': function(){
+				selectors.each(function(selectorStr){
+					new Tricss.Selector(selectorStr).getElements();
+				});
+			}
+		});
+	</script>
+</head>
+<body>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+	<div class="a">
+		<div class="b">
+			<div class="c">la lalala lala lalala la la laalaaaaalaaaaaaa</div>
+		</div>
+	</div>
+</body>
+</html>
