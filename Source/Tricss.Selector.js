@@ -74,7 +74,7 @@ Tricss.Selector = new Class({
 	initialize: function(selector){
 		if (cache.has(selector)) return cache.get(selector);
 		cache.set(selector, this);
-		
+				
 		this.selector = selector;
 		
 		this.alwaysComplies = true;
@@ -125,7 +125,7 @@ Tricss.Selector = new Class({
 
 	getElements: function(){
 		if (!this.used) this.update();
-
+		
 		return this.elements;
 	},
 
@@ -158,8 +158,8 @@ Tricss.Selector = new Class({
 		
 		this.used = true;
 		
-		this.elements = lastPart.elements;
-		
+		this.elements = lastPart.elements.getValues();
+				
 		this.elements.each(function(element){
 			var delta = 1;
 			var el = element;

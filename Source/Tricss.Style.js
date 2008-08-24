@@ -9,9 +9,8 @@ Element.implement({
 		if (Tricss.Properties.has(property)){
 			var rules = this.getTricssRules(), value = null, importance = 0, specificity = 0;
 						
-			rules.each(function(rule, i){
-				var rValue = rule.getDeclaration(property).value;
-				
+			rules.each(function(rule, i){				
+				var rValue = rule.values.get(property);
 				if (!$chk(rValue)) return;
 				
 				var rImportance = rule.importances.get(property);
@@ -24,7 +23,7 @@ Element.implement({
 				importance = rImportance;
 				specificity = rSpecificity;
 			});
-			
+						
 			return value || Tricss.Properties.get(property).initial;
 		}
 		return parentGet.apply(this, arguments);

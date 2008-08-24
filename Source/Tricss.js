@@ -10,7 +10,7 @@ Tricss.Properties = {};
 
 (function(){
 
-var store = new Hash(), observers = new Events();
+var store = {}, observers = new Events();
 
 var base = {
 	getter: $arguments(0),
@@ -19,22 +19,35 @@ var base = {
 };
 
 $each(Hash.prototype, function(fn, method){
-	if (fn.bind) Tricss.Properties[method] = fn.bind(store);
+	Tricss.Properties[method] = function(){
+		var result = fn.apply(store, arguments);
+		
+		return (result == store) ? Tricss.Properties : result;
+	}
 });
 
 $each(Events.prototype, function(fn, method){
-	var method = method.replace('Event', 'Observer');
-	Tricss.Properties[method] = fn.bind(observers);
+	method = (method == 'addEvent') ? 'observe'
+		: (method == 'removeEvent') ? 'unobserve'
+		: method.replace('Event', 'Observer');
+	
+	Tricss.Properties[method] = function(){
+		fn.apply(observers, arguments);
+		
+		return Tricss.Properties;
+	};
 });
 
 Tricss.Properties.get = function(property){
-	return Hash.get(store, property) || $extend(base);
+	return Hash.get(store, property) || $extend({}, base);
 };
 	
 Tricss.Properties.set = function(property, options){
-	options = $extend(base, options || {});
+	options = $extend($extend({}, base), options || {});
 	
-	return Hash.set(store, property, options);
+	Hash.set(store, property, options);
+	
+	return Tricss.Properties;
 };
 
 })();
