@@ -11,6 +11,10 @@ Tricss.Document = new new Class({
 		var rules = Tricss.Parser.rules(css, true);
 		
 		rules.map(function(rule){
+			rule.declarations.filter(function(declaration, property){
+				return Tricss.Properties.has(property);
+			});
+			
 			return new Tricss.Rule(rule.selector, rule.declarations);
 		});
 		
