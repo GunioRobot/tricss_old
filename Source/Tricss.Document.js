@@ -72,6 +72,7 @@ Tricss.Document = new new Class({
 		}).bind(this);
 		
 		Hash.each(document.styleSheets, function(styleSheet){
+			if ($type(styleSheet) != 'object') return;
 			delta--;
 			
 			if (!styleSheet.ownerNode && !styleSheet.owningElement) return;
