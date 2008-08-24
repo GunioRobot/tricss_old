@@ -1,4 +1,4 @@
-Tricss.Plugin = new Class({
+Tricss.Addon = new Class({
 	
 	Implements: Options,
 	
@@ -27,34 +27,30 @@ Tricss.Plugin = new Class({
 				initial: obj.initial
 			});
 						
-			Tricss.Properties.observe(property, this.changeFn.bind(this));
+			Tricss.Properties.observe(property, this._changeFn.bind(this));
 		}, this);
 		
 		if (this.prefix){
 			var obj = {};
 						
 			obj.getter = this.options.shorthandGetter;
-			
+						
 			if (obj.getter == $empty){
-				obj.getter = function(obj){
-					var value = properties.map(function(property){
+				obj.getter = function(obj){		
+					obj.value = properties.map(function(property){
 						return this.values.get(property) || Tricss.Properties.get(property).initial;
 					}, this).join(' ');
-				
-					return {
-						importance: obj.importance || 1,
-						value: value
-					};
 				};
 			}
 			
 			obj.setter = this.options.shorthandSetter;
 			
-			if (obj.setter == $empty){
+			if (this.options.shorthandSetter == $empty){
 				obj.setter = function(value, importance){
 					value.split(/ +/).each(function(value, i){
 						console.log(value, properties[i]);
 						//if (properties[i]) this.setDeclaration(properties[i], value, importance);
+						return true;
 					}, this);
 				};
 			}
@@ -62,27 +58,33 @@ Tricss.Plugin = new Class({
 			Tricss.Properties.set(this.options.prefix, obj);
 		}
 		
-		Tricss.Plugins.set(this.name, this);
+		Tricss.Addons.set(this.name, this);
 	},
 	
-	changeFn: function(element){
+	_changeFn: function(element){		
 		var styles = this.Properties.map(function(obj, property){
-			console.log(this.prefix + property, element.getStyle(this.prefix + property));
 			return element.getStyle(this.prefix + property);
 		}, this);
 		
-		var oldStylesObj = element.retrieve('tricss:plugin:oldStyles', {});
+		var oldStylesObj = element.retrieve('tricss:addon:oldStyles', {});
 		var oldStyles = oldStylesObj[this.name] || {};
-
+				
 		if (styles.every(function(v, p){ return oldStyles[p] == v; })) return;
 		
-		console.log(styles.x);
-		
-		this.options.onChange.call(this, element, styles, oldStyles);
+		this.options.onChange.call(this, element, styles);
 		
 		oldStylesObj[this.name] = styles;
+	},
+	
+	remove: function(){
+		this.Properties.each(function(obj, property){
+			Tricss.Properties.erase(obj.alias);
+		});
+		
+		Tricss.Addons.erase(this.name);
+				
+		return this;
 	}
-
 });
 
-Tricss.Plugins = new Hash();
+Tricss.Addons = new Hash();
