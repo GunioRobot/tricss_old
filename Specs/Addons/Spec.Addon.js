@@ -39,8 +39,8 @@ describe('Addon', {
 	'removal': function(){
 		Tricss.Addons.get('A').remove();
 		
-		value_of(Tricss.Properties.has('-addon-test-a')).should_be_false();
-		value_of($('b').getStyle('-addon-test-b')).should_be_false();
+		value_of(!Tricss.Properties.has('-addon-test-a')).should_be_true();
+		value_of(!$('b').getStyle('-addon-test-b')).should_be_true();
 		value_of(Tricss.Addons.has('A')).should_be_false();		
 	},
 	
