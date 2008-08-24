@@ -9,16 +9,20 @@ Tricss.Document = new new Class({
 	},
 	
 	addCss: function(css){
-		var rules = [];
-		this.rawRules = Tricss.Parser.rules(css, true);
+		var rules = [], rawRules = Tricss.Parser.rules(css, true);
 		
-		this.rawRules.each(function(rule){
-			Hash.filter(rule.declarations, function(declaration, property){
-				return Tricss.Properties.has(property);
+		this.rawRules.extend(rawRules);
+		
+		rawRules.each(function(rule){
+			var has = false;
+			
+			var declarations = Hash.filter(rule.declarations, function(declaration, property){
+				if (!Tricss.Properties.has(property)) return false;
+				has = true;
+				return true;
 			});
 			
-			if (rule.declarations.length > 0)
-				rules.push(new Tricss.Rule(rule.selector, rule.declarations));
+			if (has) rules.push(new Tricss.Rule(rule.selector, declarations));
 		});
 		
 		this.rules.extend(rules);
@@ -45,7 +49,6 @@ Tricss.Document = new new Class({
 		case 'link':
 			new Request({
 				onSuccess: function(css){
-					console.log(css);
 					fn.call(this, css);
 				}.bind(this),
 				onFailure: function(xhr){
