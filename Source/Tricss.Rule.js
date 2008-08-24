@@ -28,7 +28,7 @@ function changed(element){
 						
 		if (newValue == previousValue) return;
 				
-		Tricss.Properties.fireObserver(property, [element, newValue, previousValue]);
+		Tricss.Properties.fireObserver(property, [element, newValue]);
 		
 		previousValues[property] = newValue;
 	});

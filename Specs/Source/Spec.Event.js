@@ -1,4 +1,4 @@
-describe('Element.addTricssEvent', {
+describe('Events', {
 	'should fire [hover, focus] once': function(){
 		var element = new Element('div'), i = 0;
 		

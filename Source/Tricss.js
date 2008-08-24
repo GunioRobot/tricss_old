@@ -13,7 +13,7 @@ Tricss.Properties = {};
 var store = {}, observers = new Events();
 
 var base = {
-	getter: $arguments(0),
+	getter: $empty,
 	initial: '',
 	setter: $empty
 };
