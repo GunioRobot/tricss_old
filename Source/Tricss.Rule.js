@@ -102,7 +102,7 @@ Tricss.Rule.Abstract = new Class({
 			
 			obj = (type == 'object') ? [obj.value, obj.importance]
 				: $splat(obj);
-			
+						
 			this.setDeclaration(property, obj[0], obj[1]);
 		}, this);
 		

@@ -78,7 +78,7 @@ describe('Addon', {
 					initial: 'moo'
 				}
 			},
-			onChange: function(element,now){
+			onChange: function(element, now){
 				if (now.cow == 'milk!') i++;
 			}
 		});
