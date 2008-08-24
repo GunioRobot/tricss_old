@@ -25,9 +25,7 @@ function changed(element){
 	Tricss.Properties.each(function(obj, property){
 		var newValue = element.getStyle(property);
 		var previousValue = previousValues[property];
-		
-		if (property == 'spec-rule-observing') console.log(newValue);
-				
+						
 		if (newValue == previousValue) return;
 				
 		Tricss.Properties.fireObserver(property, [element, newValue, previousValue]);
