@@ -38,12 +38,25 @@ describe('Parser', {
 	},
 	
 	'rules selector': function(){
-		var r = Tricss.Parser.rules("div#foo:hover:focus  a .moep{}")[0];
-		value_of(r.selector).should_be('div#foo:hover:focus  a .moep');
+		var r = Tricss.Parser.rules("div#foo:hover:focus  a .moep{}");
+		value_of(r[0].selector).should_be('div#foo:hover:focus  a .moep');
 	},
 	
 	'rules body': function(){
 		var r = Tricss.Parser.rules("div {:body:}")[0];
 		value_of(r.body).should_be(':body:');
+	},
+	
+	'complex': function(){
+		var str = "/* --------------------\n * @Layout\n */\n\nhtml {\n  overflow: hidden;\n}\n\n/*  */  body, \n#container {\n  overflow: hidden;\n  padding: 0;\n  margin: 0;\n}";
+		var rules = Tricss.Parser.rules(str);
+		value_of(rules[0].selector.clean()).should_be('html');
+		value_of(rules[1].selector.clean()).should_be("body");
+		value_of(rules[2].selector.clean()).should_be("#container");
+	},
+	
+	'empty body': function(){
+		var rules = Tricss.Parser.rules("div {\n}");
+		value_of(rules[0].body).should_be("\n");
 	}
 });

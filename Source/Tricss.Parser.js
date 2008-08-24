@@ -1,9 +1,9 @@
 (function(){
 
 var regexps = {
-	comments: /\/\*.*?\*\//gi,
+	comments: /\/\*[^*]*\*+([^/*][^*]*\*+)*\//gim,
 	declarations: /\s*([a-z-]+)\s*:\s*([^;]+?)\s*(!important)?\s*;/gi,
-	rules: /\s*([^{]+){([^}]*)}/gi
+	rules: /((?:.+,\s+)*?.+?)\s*{([^}]*)}/gim
 };
 
 Tricss.Parser = {
@@ -26,14 +26,25 @@ Tricss.Parser = {
 		css = css.replace(regexps.comments, '');
 		
 		while (result = regexps.rules.exec(css)){
-			var rule = {
-				body: result[2],
-				selector: result[1]
+			var selector = result[1], body = result[2];
+			
+			var prototype = {
+				body: body,
+				declarations: (parseDeclarations) ? Tricss.Parser.declarations(body) : false,
 			};
 			
-			if (parseDeclarations) rule.declarations = Tricss.Parser.declarations(rule.body),
-			
-			rules.push(rule);
+			if (selector.contains(',')){
+				var selectors = selector.split(',');
+				
+				for(var i = 0, l = selectors.length; i < l; i++)
+					rules.push(
+						$extend({ selector: selectors[i] }, prototype)
+					);
+			} else {
+				prototype.selector = selector;
+				
+				rules.push(prototype);
+			}
 		}
 		
 		return rules;
