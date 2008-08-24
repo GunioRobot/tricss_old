@@ -3,6 +3,17 @@
 var parentGet = Element.prototype.getStyle;
 var parentSet = Element.prototype.setStyle;
 
+function getInlineRule(element){
+	var inlineRule = this.retrieve('tricss:inlineRule');
+	
+	if (!inlineRule){
+		inlineRule = new Tricss.Rule(element);
+		this.store('tricss:inlineRule', inlineRule);
+	}
+	
+	return inlineRule;
+}
+
 Element.implement({
 	
 	getStyle: function(property){
@@ -24,22 +35,14 @@ Element.implement({
 				specificity = rSpecificity;
 			});
 						
-			return value || Tricss.Properties.get(property).initial;
+			return value || getInlineRule(this).getDeclaration(property).value;
 		}
 		return parentGet.apply(this, arguments);
 	},
 	
 	setStyle: function(property, value){
-		if (Tricss.Properties.has(property)){
-			var inlineRule = this.retrieve('tricss:inlineRule');
-			
-			if (!inlineRule){
-				inlineRule = new Tricss.Rule(this);
-				this.store('tricss:inlineRule', inlineRule);
-			}
-			
-			inlineRule.setDeclaration(property, value, 3);
-		}
+		if (Tricss.Properties.has(property))
+			getInlineRule(this).setDeclaration(property, value, 3);
 		
 		return parentSet.apply(this, arguments);
 	}

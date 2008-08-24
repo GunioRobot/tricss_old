@@ -19,12 +19,14 @@ function changed(element){
 		
 		return;
 	}
-	
+		
 	var previousValues = element.retrieve('tricss:rule:previousValue', {});
 		
 	Tricss.Properties.each(function(obj, property){
 		var newValue = element.getStyle(property);
 		var previousValue = previousValues[property];
+		
+		if (property == 'spec-rule-observing') console.log(newValue);
 				
 		if (newValue == previousValue) return;
 				
@@ -66,10 +68,14 @@ Tricss.Rule.Abstract = new Class({
 		
 		var obj = Tricss.Properties.get(property);
 		
-		return obj.getter({
+		var result = {
 			value: this.values.get(property) || obj.initial,
 			importance: this.importances.get(property) || 1
-		});
+		};
+		
+		obj.getter(result);
+				
+		return result;
 	},
 		
 	setDeclaration: function(property, value, importance){

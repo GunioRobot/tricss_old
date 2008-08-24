@@ -69,8 +69,20 @@ describe('Rule', {
 		Tricss.Properties.erase('spec-rule:a').erase('spec-rule:b');
 	},
 	
+	'getter': function(){
+		Tricss.Properties.set('spec-rule-asd', {
+			getter: function(obj){
+				obj.value = 'bjdbjs';
+			}
+		});
+		
+		value_of(new Element('div').getStyle('spec-rule-asd')).should_be('bjdbjs');
+		
+		Tricss.Properties.erase('spec-rule-asd');		
+	},
+	
 	'observing': function(){		
-		Tricss.Properties.set('spec-rule');
+		Tricss.Properties.set('spec-rule-observing');
 		
 		var i = 0;
 				
@@ -78,19 +90,19 @@ describe('Rule', {
 			i++;
 		}
 		
-		Tricss.Properties.observe('spec-rule', fn);
+		Tricss.Properties.observe('spec-rule-observing', fn);
 		
 		var rule = new Tricss.Rule(new Element('div'), {
-			'spec-rule': 'fghj'
+			'spec-rule-observing': 'fghj'
 		});
 		
-		rule.setDeclaration('spec-rule', 'cvbn');
-		Tricss.Properties.unobserve('spec-rule', fn);
-		rule.setDeclaration('spec-rule', 'nbvc');
+		rule.setDeclaration('spec-rule-observing', 'cvbn');
+		Tricss.Properties.unobserve('spec-rule-observing', fn);
+		rule.setDeclaration('spec-rule-observing', 'nbvc');
 				
 		value_of(i).should_be(2);
 		
-		Tricss.Properties.erase('spec-rule');
+		Tricss.Properties.erase('spec-rule-observing');
 	}
 });
 
