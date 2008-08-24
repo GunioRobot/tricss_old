@@ -73,7 +73,7 @@ Tricss.Rule.Abstract = new Class({
 			importance: this.importances.get(property) || 1
 		};
 		
-		obj.getter(result);
+		obj.getter.call(this, result);
 				
 		return result;
 	},
