@@ -64,7 +64,7 @@ var regExps = {
 	specificityA: /:(before|after|first-letter|first-line)/,
 	specificityB: /\[|\:|\./g,
 	specificityC: /( |\+|>)[a-z]+/ig,
-	splitter: (/\s*([+>~\s])\s*([a-zA-Z#.*:\[])/g),
+	splitter: (/\s*([+>~\s])\s*([a-zA-Z#.*:\[])/g)
 };
 
 Tricss.Selector = new Class({

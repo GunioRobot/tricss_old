@@ -30,7 +30,7 @@ Tricss.Parser = {
 			
 			var prototype = {
 				body: body,
-				declarations: (parseDeclarations) ? Tricss.Parser.declarations(body) : false,
+				declarations: (parseDeclarations) ? Tricss.Parser.declarations(body) : false
 			};
 			
 			if (selector.contains(',')){
