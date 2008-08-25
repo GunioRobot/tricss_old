@@ -1,7 +1,7 @@
 (function(){
 
 var regexps = {
-	comments: /\/\*[^*]*\*+([^/*][^*]*\*+)*\//gim,
+	comments: new RegExp('\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*\\/', 'gim'),
 	declarations: /\s*([a-z-]+)\s*:\s*([^;]+?)\s*(!important)?\s*;/gi,
 	rules: /((?:.+,\s+)*?.+?)\s*{([^}]*)}/gim
 };
