@@ -1,6 +1,6 @@
 =Tricss Source
 
-This folder contains the _real JavaScripts_.
+This folder contains the real JavaScripts.
 
 * Core: Main script. Objects & classes are separated into different files.
 * Addons: Scripts extending Tricss, like CSS Animations or CSS Reflections.

@@ -15,7 +15,7 @@ Your imagination is the boundary!
 ==Structure
 
 * Builder/ - A php script to concatenate and minify the files.
-* _Examples/ - Outdated_
+* Examples/ - Outdated!
 * Mootools/ - See [Mootools](http://mootools.com) for further details.
 * Source/ - The _real_ script.
 * Specs/ - JSSpecs Test Suite to test functionality.
