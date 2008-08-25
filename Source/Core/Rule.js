@@ -10,7 +10,7 @@ Tricss.Rule = new Class({
 function changed(element){	
 	if (Tricss.Document && !Tricss.Document.ready){
 		if (!element.retrieve('tricss:rule:delayed')){
-			document.addEvent('tricss:ready', function(){
+			window.addEvent('tricss:ready', function(){
 				changed(element);
 			});
 			

@@ -67,7 +67,7 @@ Tricss.Document = new new Class({
 		var fn = (function(){
 			if (!this.ready && delta == 1){
 				this.ready = true;
-				document.fireEvent('tricss:ready', [this.rules]);
+				window.fireEvent('tricss:ready', [this.rules]);
 			}
 		}).bind(this);
 		

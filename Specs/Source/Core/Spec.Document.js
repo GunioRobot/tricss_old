@@ -3,7 +3,7 @@
 var fired = 0;
 var wasReady = Tricss.Document.ready;
 
-document.addEvent('tricss:ready', function(){
+window.addEvent('tricss:ready', function(){
 	fired++;
 });
 
