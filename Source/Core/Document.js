@@ -1,12 +1,8 @@
-Tricss.Document = new new Class({
+Tricss.Document = {
 	
-	initialize: function(){
-		this.ready = false;
-		this.rules = [];
-		this.rawRules = [];
-		
-		window.addEvent('domready', this.process.bind(this));
-	},
+	ready: false,
+	rules: [],
+	rawRules: [],
 	
 	addCss: function(css){
 		var rules = [], rawRules = Tricss.Parser.rules(css, true);
@@ -89,4 +85,6 @@ Tricss.Document = new new Class({
 		
 		return this;
 	}
-})();
+};
+
+window.addEvent('domready', Tricss.Document.process.bind(Tricss.Document));
