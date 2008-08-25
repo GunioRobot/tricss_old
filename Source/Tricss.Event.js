@@ -17,8 +17,14 @@ Tricss.Events = new Hash({
 	
 var ids = [], removers = new Hash();
 
-var obj = {
-	addEvent: function(events, when, fn){
+Element.implement({
+	addTricssEvent: function(events, when, fn){
+		events = $splat(events);
+		if (!fn){
+			fn = when;
+			when = 'enter';
+		}
+				
 		var l = events.length, rmvrs = [], state = [];
 			
 		var id = ids.indexOf(fn);
@@ -53,7 +59,13 @@ var obj = {
 		return this;
 	},
 
-	removeEvent: function(events, when, fn){
+	removeTricssEvent: function(events, when, fn){
+		events = $splat(events);
+		if (!fn){
+			fn = when;
+			when = 'enter';
+		}
+		
 		var id = ids.indexOf(fn) + events.join(',') + when;
 		var rmvrs = removers[id];
 	
@@ -64,25 +76,6 @@ var obj = {
 	
 		return this;
 	}
-};
-
-$each(obj, function(multiFn, method){
-	var implement = method.replace('Event', 'TricssEvent');
-	
-	Element.implement(implement, function(event, when, fn){
-		if (!fn){
-			fn = when;
-			when = 'enter';
-		}
-		
-		if ($type(event) == 'array')
-			return multiFn.call(this, event, when, fn);
-		
-		event = Tricss.Events.get(a)[when];
-		if (event) this[method](event, fn);
-		
-		return this;
-	});
 });
 
 })();
