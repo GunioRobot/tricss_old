@@ -1,0 +1,8 @@
+tricss, Copyright 2008 (c) Chris Schneider, <http://chrisbk.de>
+
+This folder contains JSSpecs, a test suite to check functionality. The folder structure is similar to the structure of Source/. All files are prefixed with "Spec.".
+
+<h3>See Also</h3>
+
+http://code.google.com/p/jsspec/
+http://jania.pe.kr/aw/moin.cgi/JSSpec
