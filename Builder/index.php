@@ -9,7 +9,7 @@ abstract class Builder {
 	private static $commits = array();
 	private static $files = array();
 	public static $minify = array();
-	public static $pathToRoot = '../';
+	public static $pathToSource = '../Source/';
 	public static $save = array();
 	
 	public static function initialize(){
@@ -34,7 +34,7 @@ abstract class Builder {
 	public static function addFiles(){
 		$files = func_get_args();
 		foreach($files as $file){
-			self::$files[] = self::$pathToRoot . $file;
+			self::$files[] = self::$pathToSource . $file;
 		}
 	}
 	
@@ -96,13 +96,13 @@ abstract class Builder {
 Builder::initialize();
 
 Builder::addFiles(
-	'Source/Tricss.js',
-	'Source/Tricss.Document.js',
-	'Source/Tricss.Event.js',
-	'Source/Tricss.Parser.js',
-	'Source/Tricss.Rule.js',
-	'Source/Tricss.Selector.js',
-	'Source/Tricss.Style.js'
+	'Core/Tricss.js',
+	'Core/Document.js',
+	'Core/Event.js',
+	'Core/Parser.js',
+	'Core/Rule.js',
+	'Core/Selector.js',
+	'Core/Style.js'
 );
 
 
