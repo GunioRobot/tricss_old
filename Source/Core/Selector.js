@@ -114,13 +114,13 @@ Tricss.Selector = new Class({
 
 	addEvent: function(event, fn){
 		if (!this.used) this.update();
-
+		
 		if (event == 'complies' && this.alwaysComplies)
 			this.elements.each(function(element){
 				fn.call(this, element);
 			}, this);
-
-		this.parent.apply(this, arguments);
+		
+		this.parent(event, fn);
 	},
 
 	getElements: function(){

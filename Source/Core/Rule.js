@@ -124,7 +124,7 @@ Tricss.Rule.Selector = new Class({
 		this.parent(declarations);
 		
 		this.selector.addEvent('complies', this.attachTo.bind(this));
-		this.selector.addEvent('uncomplies', this.detatchFrom.bind(this));
+		//this.selector.addEvent('uncomplies', this.detatchFrom.bind(this));
 	},
 	
 	getElements: function(){

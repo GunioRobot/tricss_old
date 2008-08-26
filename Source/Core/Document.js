@@ -48,7 +48,7 @@ Tricss.Document = {
 					fn.call(this, css);
 				}.bind(this),
 				onFailure: function(xhr){
-					if (document.location.href.slice(0, 8)== 'file:///')
+					if (document.location.href.slice(0, 5) == 'file:')
 						fn.call(this, xhr.responseText);
 				}.bind(this),
 				url: element.href,
@@ -66,15 +66,15 @@ Tricss.Document = {
 				window.fireEvent('tricss:ready', [this.rules]);
 			}
 		}).bind(this);
-		
-		Hash.each(document.styleSheets, function(styleSheet){
+				
+		Array.each(document.styleSheets, function(styleSheet){			
 			if ($type(styleSheet) != 'object') return;
 			delta--;
-			
+						
 			if (!styleSheet.ownerNode && !styleSheet.owningElement) return;
-			
+						
 			var element = $(styleSheet[styleSheet.ownerNode ? 'ownerNode' : 'owningElement']);
-			
+						
 			this.addStylesheet(element, function(){
 				delta++;
 				fn();

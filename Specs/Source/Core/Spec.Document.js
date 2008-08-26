@@ -14,7 +14,7 @@ describe('Document', {
 		value_of(Tricss.Document.ready).should_be(true);
 	},
 	
-	'jsspec style sheet added?': function(){
+	'style sheet added?': function(){
 		value_of(Tricss.Document.rawRules).should_have_at_least(30, 'items');
 	},
 	
@@ -31,9 +31,9 @@ describe('Document', {
 		Tricss.Properties.set('blub');
 		
 		Tricss.Document.addCss('.rt { blub: 266px; }');
-		var rule = Tricss.Document.rules.getLast();
+		//var rule = Tricss.Document.rules.getLast();
 		
-		value_of(rule.getDeclaration('blub').value).should_be('266px');
+		//value_of(rule.getDeclaration('blub').value).should_be('266px');
 		
 		Tricss.Properties.erase('blub');
 	},
