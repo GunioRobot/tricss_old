@@ -59,7 +59,7 @@ describe('Selector', {
 			'LI.red.level': 21,
 			'#x34y': 100,
 			'div#asd a .fg': 112,
-			'q#wer .zz u#io p': 213,			
+			'q#wer .zz u#io p': 213
 		}, function(specificity, selector){
 			selector = new Tricss.Selector(selector);
 			value_of(selector.getSpecificity()).should_be(specificity);

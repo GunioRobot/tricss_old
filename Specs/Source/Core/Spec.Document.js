@@ -31,9 +31,9 @@ describe('Document', {
 		Tricss.Properties.set('blub');
 		
 		Tricss.Document.addCss('.rt { blub: 266px; }');
-		//var rule = Tricss.Document.rules.getLast();
+		var rule = Tricss.Document.rules.getLast();
 		
-		//value_of(rule.getDeclaration('blub').value).should_be('266px');
+		value_of(rule.getDeclaration('blub').value).should_be('266px');
 		
 		Tricss.Properties.erase('blub');
 	},
