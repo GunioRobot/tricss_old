@@ -10,8 +10,8 @@ Tricss.Parser = {
 	declarations: function(css){
 		var declarations = {};
 		
-		while (result = regexps.declarations.exec(css)){			
-			declarations[result[1]] = {
+		while (result = regexps.declarations.exec(css)){
+			declarations[result[1].toLowerCase()] = {
 				important: (result[3] == '!important'),
 				value: result[2]
 			};

@@ -1,24 +1,24 @@
 describe('Selector', {
 	'matches': function(){
 		var selectors = [
-			'div#a .b',
+			'div#b',
 			'#a',
-			'.a',
-			'div#a > div',
-			'a[title=c]',
+			'div #a div',
+			'#foo #c',
+			'div > input#a',
+			'div[id=c]',
 			'div:hover',
-			'div#a:hover div.b',
-			'div:hover div:hover a',
-			'input:focus',
-			'input:hover:focus'
+			'#foo div#b:hover'
 		];
 		var i = 0, should = 0;
+		selectors = ['div:hover'];
 		
 		selectors.each(function(selector){
 			new Tricss.Selector(selector).addEvent('complies', function(){ i++; });
+			
 			should += $$(selector).length;
 		});
-		
+				
 		value_of(i).should_be(should);
 	},
 	
@@ -29,7 +29,8 @@ describe('Selector', {
 			i++;
 		}
 		
-		var selector = new Tricss.Selector('div#foo:hover div div#a:focus');
+		var selector = new Tricss.Selector('div#foo:hover div input#a:focus');
+		
 		selector.addEvent('complies', fn);
 		selector.addEvent('uncomplies', fn);
 		

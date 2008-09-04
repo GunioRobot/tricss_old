@@ -28,7 +28,7 @@ var Part = (function(){
 			this.selector = selector;
 			this.staticSelector = staticSelector;
 			this.dynamicPseudos = dynamicPseudos || [];
-	
+			
 			this.alwaysComplies = (this.dynamicPseudos.length < 1);
 			this.dynamicPseudosStr = this.dynamicPseudos.join('');
 			this.elements = new Hash();
@@ -83,27 +83,51 @@ Tricss.Selector = new Class({
 		this.parts = [];
 		this.used = false;
 
-		var strOriginal = '';
-		var strStatic = '';
-
-		var result = this.selector.split(regExps.splitter);
-
-		(!result[0]) ? result.shift() : result.unshift('', '');
-
+		var strOriginal = '', strStatic = '';
+		
+		var result = (function(){
+			var a = this.selector.split(regExps.splitter), result = [a[0]];
+			
+			if (Browser.Engine.trident){
+				var b = this.selector.match(regExps.splitter);
+				
+				for (var i = 1, l = a.length; i < l; i++)					
+					result.push(b[i - 1].slice(0, 1), b[i - 1].slice(1) + a[i]);
+			} else {
+				for (var i = 1, l = a.length; i < l; i += 3)
+					result.push(a[i], a[i + 1] + a[i + 2]);
+			}
+			
+			return result;
+		}).call(this);
+				
 		var last = result.getLast();
 		if (!last || last.match(/^\s*$/)) result.pop();
 
-		for (var i = 0, l = result.length; i < l; i += 3){
-			var str = result[i + 1] + (result[i + 2] || '');
-	
-			var r = str.split(regExps.dynamics);
-	
-			strStatic += result[i] + r[0];
-			strOriginal += result[i] + str;
-	
-			var dynamicPseudos = r.erase('').erase(' ');
-			dynamicPseudos.shift();
+		for (var i = 0, l = result.length; i < l; i += 2){
+			var part = result[i], delim = (i > 0) ? result[i - 1] : '';
 				
+			var dpSplitResult = (function(){								
+				if (Browser.Engine.trident){
+					var str = '$$';
+					return part.replace(':active', str + 'active')
+						.replace(':focus', str + 'focus')
+						.replace(':hover', str + 'hover')
+						.split(str);
+				}
+				
+				var result = part.split(regExps.dynamics).erase('').erase(' ');
+				
+				if (result.length > 0 && !result.getLast()) result.pop();
+								
+				return result;
+			})();
+						
+			strStatic += delim + dpSplitResult[0];
+			strOriginal += delim + part;
+									
+			var dynamicPseudos = dpSplitResult.slice(1);
+										
 			var part = new Part(strOriginal, strStatic, dynamicPseudos);
 	
 			if (!part.alwaysComplies) this.alwaysComplies = false;
@@ -111,14 +135,15 @@ Tricss.Selector = new Class({
 			this.parts.push(part);
 		}
 	},
-
+	
 	addEvent: function(event, fn){
 		if (!this.used) this.update();
 		
-		if (event == 'complies' && this.alwaysComplies)
+		if (event == 'complies' && this.alwaysComplies){
 			this.elements.each(function(element){
 				fn.call(this, element);
 			}, this);
+		}
 		
 		this.parent(event, fn);
 	},

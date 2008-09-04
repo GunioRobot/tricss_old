@@ -24,7 +24,7 @@ Element.implement({
 			fn = when;
 			when = 'enter';
 		}
-				
+						
 		var l = events.length, rmvrs = [], state = [];
 			
 		var id = ids.indexOf(fn);
