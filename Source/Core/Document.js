@@ -37,23 +37,39 @@ Tricss.Document = {
 		return this;
 	},
 	
-	getCss: function(element, fn){
-		switch (element.get('tag')){
-		case 'style':
-			fn.call(this, element.get('html'));
-		break;
-		case 'link':
-			new Request({
-				onSuccess: function(css){
-					fn.call(this, css);
-				}.bind(this),
-				onFailure: function(xhr){
-					if (document.location.href.slice(0, 5) == 'file:')
-						fn.call(this, xhr.responseText);
-				}.bind(this),
-				url: element.href,
-				method: 'get'
-			}).send();
+	getCss: function(styleSheet, fn){
+		if (styleSheet.cssText){
+			var css = styleSheet.cssText;
+			
+			if (Browser.Engine.trident)
+				css = css.replace(/\s*}/mg, ';}');
+			
+			fn.call(this, css);
+			
+		} else if (styleSheet.ownerNode) {
+			
+			var element = $(styleSheet.ownerNode);
+			
+			switch(element.get('tag')){
+			case 'style':
+				fn.call(this, element.get('html'));
+				
+			break;
+			case 'link':
+				new Request({
+					onSuccess: function(css){
+						fn.call(this, css);
+					}.bind(this),
+					
+					onFailure: function(xhr){
+						if (document.location.href.slice(0, 5) == 'file:')
+							fn.call(this, xhr.responseText);
+					}.bind(this),
+					
+					url: element.href,
+					method: 'get'
+				}).send();
+			}
 		}
 	},
 	
@@ -67,15 +83,12 @@ Tricss.Document = {
 			}
 		}).bind(this);
 				
-		Array.each(document.styleSheets, function(styleSheet){			
+		Array.each(document.styleSheets, function(styleSheet){
 			if ($type(styleSheet) != 'object') return;
+			
 			delta--;
-						
-			if (!styleSheet.ownerNode && !styleSheet.owningElement) return;
-						
-			var element = $(styleSheet[styleSheet.ownerNode ? 'ownerNode' : 'owningElement']);
-						
-			this.addStylesheet(element, function(){
+			
+			this.addStylesheet(styleSheet, function(){
 				delta++;
 				fn();
 			});

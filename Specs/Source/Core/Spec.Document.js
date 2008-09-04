@@ -41,7 +41,7 @@ describe('Document', {
 	'<style>': function(){
 		var has = Tricss.Document.rawRules.some(function(rule){
 			return (rule.selector.contains('#spec-document-test')
-				&& Hash.has(rule.declarations, 'font-size'));
+				&& Hash.has(rule.declarations, '-tricss-test'));
 		});
 		value_of(has).should_be(true);
 	}
